@@ -138,7 +138,7 @@ func (t *SimpleAsset) Transfer(stub shim.ChaincodeStubInterface, args []string) 
 
 	// 검증
 	if( from_amount < amount ) {
-		shim.Error("Not enough asset value: "+args[0])
+		return shim.Error("Not enough asset value: "+args[0])
 	}
 
 	// 4. marshal
