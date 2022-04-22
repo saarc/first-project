@@ -57,7 +57,7 @@ func (t *SimpleAsset) Set(stub shim.ChaincodeStubInterface, args []string) peer.
 
 	assetAsBytes, err := json.Marshal(asset)
 	if err != nil {
-		shim.Error("Failed to marshal arguments: " +args[0]+" "+args[1])
+		return shim.Error("Failed to marshal arguments: " +args[0]+" "+args[1])
 	}
 
 	err = stub.PutState(args[0], assetAsBytes)
@@ -77,10 +77,10 @@ func (t *SimpleAsset) Get(stub shim.ChaincodeStubInterface, args []string) peer.
 
 	value, err := stub.GetState(args[0])
 	if err != nil {
-		shim.Error("Filed to get asset: " + args[0] + " with error: " + err.Error())
+		return shim.Error("Filed to get asset: " + args[0] + " with error: " + err.Error())
 	}
 	if value == nil {
-		shim.Error("Asset not found: " + args[0])
+		return shim.Error("Asset not found: " + args[0])
 	}
 
 	return shim.Success([]byte(value))
@@ -95,10 +95,10 @@ func (t *SimpleAsset) Del(stub shim.ChaincodeStubInterface, args []string) peer.
 
 	value, err := stub.GetState(args[0])
 	if err != nil {
-		shim.Error("Filed to get asset: " + args[0] + " with error: " + err.Error())
+		return shim.Error("Filed to get asset: " + args[0] + " with error: " + err.Error())
 	}
 	if value == nil {
-		shim.Error("Asset not found: " + args[0])
+		return shim.Error("Asset not found: " + args[0])
 	}
 
 	err = stub.DelState(args[0])
@@ -114,17 +114,17 @@ func (t *SimpleAsset) Transfer(stub shim.ChaincodeStubInterface, args []string) 
 	// 2. 보내는이, 받는이 GetState -> unmarshal
 	from_asset, err := stub.GetState(args[0])
 	if err != nil {
-		shim.Error("Filed to get asset: " + args[0] + " with error: " + err.Error())
+		return shim.Error("Filed to get asset: " + args[0] + " with error: " + err.Error())
 	}
 	if from_asset == nil {
-		shim.Error("Asset not found: " + args[0])
+		return shim.Error("Asset not found: " + args[0])
 	}
 	to_asset, err := stub.GetState(args[1])
 	if err != nil {
-		shim.Error("Filed to get asset: " + args[1] + " with error: " + err.Error())
+		return shim.Error("Filed to get asset: " + args[1] + " with error: " + err.Error())
 	}
 	if to_asset == nil {
-		shim.Error("Asset not found: " + args[1])
+		return shim.Error("Asset not found: " + args[1])
 	}
 	// 3. 잔액변환 및 검증, 전송수행
 	from := Asset{}
